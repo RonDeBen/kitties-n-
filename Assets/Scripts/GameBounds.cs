@@ -20,6 +20,10 @@ public class GameBounds : MonoBehaviour {
 	    transform.position = new Vector3(offsetX, offsetY, -10);
 	}
 
+	public float Area(){
+		return width * height;
+	}
+
 	// Use this for initialization
 	void Start () {
 	}

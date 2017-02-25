@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class BoxDrawer2 : MonoBehaviour {
 
-    public Transform cube;
+    public Transform cube, pupCube;
 
     private Vector3 minPoint, maxPoint;
     private ShoeBox cub;
+    private PupBox pupCub;
 
 	// Use this for initialization
 	void Start () {
@@ -35,6 +36,27 @@ public class BoxDrawer2 : MonoBehaviour {
         if (Input.GetMouseButtonUp(0))
         {
             cub.DrawEndAction();
+        }
+
+        if (Input.GetMouseButtonDown(1))//initial right mouse button down
+        {
+            minPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            pupCub = Instantiate(pupCube).GetComponent<PupBox>();
+        }
+        if (Input.GetMouseButton(1))//moving right mouse button
+        {
+            maxPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Rect rect = new Rect();
+            rect.min = minPoint;
+            rect.max = maxPoint;
+            
+            pupCube.transform.position = rect.center;
+            pupCube.transform.localScale = rect.size;
+            pupCub.myRect = rect;
+        }
+        if (Input.GetMouseButtonUp(1))//release right mouse button
+        {
+            pupCub.DrawEndAction();
         }
     }
 }

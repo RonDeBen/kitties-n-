@@ -6,6 +6,12 @@ using UnityEngine.UI;
 
 public class PopulationManager : MonoBehaviour {
 
+	public static PopulationManager instance;
+
+	void Awake(){
+		instance = this;
+	}
+
 	public GameObject kittenObject, doggieObject;
 	public Text kittenText, doggieText, timeText;
 	public float a, b, c, d, generationTime;
@@ -72,7 +78,7 @@ public class PopulationManager : MonoBehaviour {
 		dogsSpawned = 0;
 	}
 
-	void SpawnDoggies(int numOfDoggies){
+	public void SpawnDoggies(int numOfDoggies){
 		doggiePopulation += numOfDoggies;
 		for(int k = 0; k < numOfDoggies; k++){
 			Vector3 newPos = new Vector3(Random.Range(0f, GameBounds.instance.width), Random.Range(0f, GameBounds.instance.height), 0f);
@@ -80,7 +86,7 @@ public class PopulationManager : MonoBehaviour {
 		}
 	}
 
-	void SpawnKittens(int numOfKittens){
+	public void SpawnKittens(int numOfKittens){
 		kittenPopulation += numOfKittens;
 		for(int k = 0; k < numOfKittens; k++){
 			Vector3 newPos = new Vector3(Random.Range(0f, GameBounds.instance.width), Random.Range(0f, GameBounds.instance.height), 0f);
@@ -88,7 +94,7 @@ public class PopulationManager : MonoBehaviour {
 		}
 	}
 
-	void RemoveDoggies(int numOfDoggies){
+	public void RemoveDoggies(int numOfDoggies){
 		if(numOfDoggies > doggiePopulation){
 			numOfDoggies = doggiePopulation;
 		}
@@ -101,7 +107,7 @@ public class PopulationManager : MonoBehaviour {
 		}
 	}
 
-	void RemoveKittens(int numOfKittens){
+	public void RemoveKittens(int numOfKittens){
 		if(numOfKittens > kittenPopulation){
 			numOfKittens = kittenPopulation;
 		}
@@ -112,5 +118,9 @@ public class PopulationManager : MonoBehaviour {
 				Destroy(obj);
 			}
 		}
+	}
+
+	public float TotalPopulation(){
+		return kittenPopulation + doggiePopulation;
 	}
 }
