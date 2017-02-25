@@ -16,17 +16,19 @@ public class ShoeBox : MonoBehaviour
     public void DrawEndAction()
     {
         Collider2D[] colls = Physics2D.OverlapAreaAll(myRect.min, myRect.max, 1 << 8);
-        int kittenCount = 0;
-        int puppyCount = 0;
+        List<GameObject> kittens = new List<GameObject>();
+        List<GameObject> puppies = new List<GameObject>();
         foreach (Collider2D pet in colls)
         {
             pet.transform.parent = transform;
             pet.GetComponent<RandomMovement>().enabled = false;
             if (pet.tag.Equals("kitten"))
-                kittenCount++;
+                kittens.Add(pet.gameObject);
             else
-                puppyCount++;
+                puppies.Add(pet.gameObject);
         }
+        PopulationManager.instance.RemoveKittensFromList(kittens);
+        PopulationManager.instance.RemoveDoggiesFromList(puppies);
         //TODO: change the population totals using the counts
         isDrawing = false;
         StartCoroutine(FindThemAHome());

@@ -128,6 +128,26 @@ public class PopulationManager : MonoBehaviour {
 		}
 	}
 
+	public void RemoveKittensFromList(List<GameObject> kittens){
+		foreach(GameObject kitten in kittens){
+			kittenPopulation -= 1;
+			GameObject obj = ExtractKitten(kitten);
+			if(obj != null){
+				Destroy(obj);
+			}
+		}
+	}
+
+	public void RemoveDoggiesFromList(List<GameObject> doggies){
+		foreach(GameObject doggie in doggies){
+			doggiePopulation -= 1;
+			GameObject obj = ExtractDoggie(doggie);
+			if(obj != null){
+				Destroy(obj);
+			}
+		}
+	}
+
 	public GameObject ExtractKitten(GameObject kitten){
 		int index = kittenList.FindIndex(i => i == kitten);
 		GameObject obj = kittenList[index];
