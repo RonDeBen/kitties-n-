@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+This script is a modified version of the script aldonaletto posted to http://answers.unity3d.com/questions/183465/random-movement-in-2d.html
+ */
+
 public class RandomMovement : MonoBehaviour {
 
     public float moveSpeed = 1;
