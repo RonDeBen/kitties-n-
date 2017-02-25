@@ -7,7 +7,7 @@ public class BoxDrawer2 : MonoBehaviour {
 
     public Transform cube, pupCube;
 
-    public Rect rect;
+    public Rect rect, pupRect;
 
     private Vector3 minPoint, maxPoint;
     private ShoeBox cub;
@@ -17,6 +17,7 @@ public class BoxDrawer2 : MonoBehaviour {
     {
         singleton = this;
         rect = new Rect();
+        pupRect = new Rect();
     }
 
 	// Use this for initialization
@@ -26,6 +27,7 @@ public class BoxDrawer2 : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        //Draw pet boxes
         if (Input.GetMouseButtonDown(0))
         {
             minPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -47,6 +49,7 @@ public class BoxDrawer2 : MonoBehaviour {
             cub.DrawEndAction();
         }
 
+        //Draw pup boxes
         if (Input.GetMouseButtonDown(1))//initial right mouse button down
         {
             minPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -55,17 +58,17 @@ public class BoxDrawer2 : MonoBehaviour {
         if (Input.GetMouseButton(1))//moving right mouse button
         {
             maxPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Rect rect = new Rect();
-            rect.min = minPoint;
-            rect.max = maxPoint;
             
-            pupCube.transform.position = rect.center;
-            pupCube.transform.localScale = rect.size;
-            pupCub.myRect = rect;
+            pupRect.min = minPoint;
+            pupRect.max = maxPoint;
+            
+            pupCub.transform.position = pupRect.center;
+            pupCub.transform.localScale = pupRect.size;
+            pupCub.myRect = pupRect;
         }
         if (Input.GetMouseButtonUp(1))//release right mouse button
         {
-            pupCub.DrawEndAction();
+            //pupCub.DrawEndAction();
         }
     }
 }
