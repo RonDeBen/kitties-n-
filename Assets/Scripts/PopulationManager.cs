@@ -86,6 +86,14 @@ public class PopulationManager : MonoBehaviour {
 		}
 	}
 
+	public void SpawnDoggiesInRect(int numOfDoggies, Rect myRect){
+		doggiePopulation += numOfDoggies;
+		for(int k = 0; k < numOfDoggies; k++){
+			Vector3 newPos = new Vector3(myRect.min.x + Random.Range(0f, myRect.width), myRect.min.y + Random.Range(0f, myRect.height), 0f);
+			doggieStack.Push(Instantiate(doggieObject, newPos, Quaternion.identity));
+		}
+	}
+
 	public void SpawnKittens(int numOfKittens){
 		kittenPopulation += numOfKittens;
 		for(int k = 0; k < numOfKittens; k++){
