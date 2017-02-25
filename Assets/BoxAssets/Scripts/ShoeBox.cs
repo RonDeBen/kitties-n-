@@ -9,10 +9,11 @@ using UnityEngine;
 public class ShoeBox : MonoBehaviour {
 
     public float speed = 20f;
+    public Rect myRect;
 
     public void DrawEndAction()
     {
-        Collider2D[] colls = Physics2D.OverlapBoxAll(transform.position, transform.localScale, 0f, 1<<8);
+        Collider2D[] colls = Physics2D.OverlapAreaAll(myRect.min, myRect.max, 1 << 8);
         int kittenCount = 0;
         int puppyCount = 0;
         foreach(Collider2D pet in colls)

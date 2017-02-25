@@ -30,6 +30,7 @@ public class BoxDrawer2 : MonoBehaviour {
             
             cub.transform.position = rect.center;
             cub.transform.localScale = rect.size;
+            cub.myRect = rect;
         }
         if (Input.GetMouseButtonUp(0))
         {
