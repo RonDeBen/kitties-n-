@@ -68,7 +68,7 @@ public class BoxDrawer2 : MonoBehaviour {
         }
         if (Input.GetMouseButtonUp(1))//release right mouse button
         {
-            //pupCub.DrawEndAction();
+            pupCub.DrawEndAction();
         }
     }
 }

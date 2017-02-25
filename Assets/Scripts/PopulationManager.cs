@@ -81,7 +81,7 @@ public class PopulationManager : MonoBehaviour {
 	public void SpawnDoggies(int numOfDoggies){
 		doggiePopulation += numOfDoggies;
 		for(int k = 0; k < numOfDoggies; k++){
-			Vector3 newPos = new Vector3(Random.Range(0f, GameBounds.instance.width), Random.Range(0f, GameBounds.instance.height), 0f);
+			Vector3 newPos = new Vector3(Random.Range(0f, Mathf.Abs(GameBounds.instance.width)), Random.Range(0f, Mathf.Abs(GameBounds.instance.height)), 0f);
 			doggieList.Add(Instantiate(doggieObject, newPos, Quaternion.identity));
 		}
 	}
