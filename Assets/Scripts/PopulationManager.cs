@@ -1,28 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class PopulationManager : MonoBehaviour {
 
 	public GameObject kittenObject, doggieObject;
-	public float kittenKonstant, aggressionConstant, dogConstant, generationTime;
+	public Text kittenText, doggieText, timeText;
+	public float a, b, c, d, generationTime;
+	public int hackStartDog, hackStartCat;
 
 	private Stack<GameObject> kittenStack, doggieStack;
 
-	private float catVelocity;
+	private float catsToSpawn, dogsToSpawn, dogsSpawned, catsSpawned, generationStartTime;
 
 	private float nextSpawn;
 	private int kittenPopulation, doggiePopulation;
 
 	// Use this for initialization
 	void Start () {
-		// SpawnKittens(GameManager.instance.startDoggies);
-		// SpawnDoggies(GameManager.instance.startKittens);
 		kittenStack = new Stack<GameObject>();
 		doggieStack = new Stack<GameObject>();
-		SpawnKittens(10);
-		SpawnDoggies(10);
+		SpawnKittens(hackStartCat);
+		SpawnDoggies(hackStartDog);
 		nextSpawn = Time.time + generationTime;
 	}
 	
@@ -30,25 +31,45 @@ public class PopulationManager : MonoBehaviour {
 	void Update(){
 		if(Time.time > nextSpawn){
 			nextSpawn = Time.time + generationTime;
-			SpawnNextGeneration();
+			GetNextGeneration();
 		}
+		LerpAnimals();
 	}
 
-	public float deltaKitten(){
-		return 100 - kittenPopulation;
+	public void LerpAnimals(){
+		float percentage = (nextSpawn-Time.time)/generationTime;
+		if(catsToSpawn > 0){//positive change
+			float kittenSpawnThisCycle = Mathf.Lerp(0f, catsToSpawn, percentage) - catsSpawned;
+			catsSpawned += kittenSpawnThisCycle;
+			SpawnKittens((int)kittenSpawnThisCycle);
+		}else{//negative change
+			float kittenRemoveThisCycle = -(Mathf.Lerp(0f, catsToSpawn, percentage) + catsSpawned);
+			catsSpawned += kittenRemoveThisCycle;//should really be catsRemoved
+			RemoveKittens((int)kittenRemoveThisCycle);
+		}
+
+		if(dogsToSpawn > 0){//positive change
+			float doggiesSpawnThisCycle = Mathf.Lerp(0f, dogsToSpawn, percentage) - dogsSpawned;
+			dogsSpawned += doggiesSpawnThisCycle;
+			SpawnDoggies((int)doggiesSpawnThisCycle);
+		}else{//negative change
+			float doggiesRemoveThisCycle = -(Mathf.Lerp(0f, dogsToSpawn, percentage) + dogsSpawned);
+			dogsSpawned += doggiesRemoveThisCycle;//should really be dogsRemoved
+			RemoveDoggies((int)doggiesRemoveThisCycle);
+		}
+
+		kittenText.text = "Number of Kittens: " + kittenPopulation.ToString();
+		doggieText.text = "Number of Puppies: " + doggiePopulation.ToString();
+		timeText.text = "Time: " + Time.time.ToString("F1");
 	}
 
-	public void SpawnNextGeneration(){
-		Debug.Log("number of cats: " + kittenPopulation);
-		Debug.Log("number of dogs: " + doggiePopulation);
-		catVelocity = kittenKonstant*deltaKitten()+aggressionConstant*(kittenPopulation - doggiePopulation);
-
-		if(catVelocity > 0){
-			SpawnKittens((int)catVelocity);
-		}else{ 
-			RemoveKittens((int)catVelocity);
-		}
-		SpawnDoggies((int)(doggiePopulation * dogConstant));
+	public void GetNextGeneration(){
+		float dogThing = (a+b*kittenPopulation)*doggiePopulation;
+		float catThing = (c-d*doggiePopulation)*kittenPopulation;
+		dogsToSpawn = dogThing - doggiePopulation;
+		catsToSpawn = catThing - kittenPopulation;
+		catsSpawned = 0;
+		dogsSpawned = 0;
 	}
 
 	void SpawnDoggies(int numOfDoggies){
@@ -67,16 +88,23 @@ public class PopulationManager : MonoBehaviour {
 		}
 	}
 
-	// void RemoveDoggies(int numOfDoggies){
-	// 	for(int k = 0; k < numOfDoggies; k++){
-	// 		GameObject obj = doggieStack.Pop();
-	// 		if(obj != null){
-	// 			Destroy(obj);
-	// 		}
-	// 	}
-	// }
+	void RemoveDoggies(int numOfDoggies){
+		if(numOfDoggies > doggiePopulation){
+			numOfDoggies = doggiePopulation;
+		}
+		doggiePopulation -= numOfDoggies;
+		for(int k = 0; k < numOfDoggies; k++){
+			GameObject obj = doggieStack.Pop();
+			if(obj != null){
+				Destroy(obj);
+			}
+		}
+	}
 
 	void RemoveKittens(int numOfKittens){
+		if(numOfKittens > kittenPopulation){
+			numOfKittens = kittenPopulation;
+		}
 		kittenPopulation -= numOfKittens;
 		for(int k = 0; k < numOfKittens; k++){
 			GameObject obj = kittenStack.Pop();
