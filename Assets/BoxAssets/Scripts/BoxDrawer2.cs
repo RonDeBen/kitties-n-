@@ -1,14 +1,23 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BoxDrawer2 : MonoBehaviour {
+    public static BoxDrawer2 singleton;
 
     public Transform cube, pupCube;
+
+    public Rect rect;
 
     private Vector3 minPoint, maxPoint;
     private ShoeBox cub;
     private PupBox pupCub;
+
+    void Awake()
+    {
+        singleton = this;
+        rect = new Rect();
+    }
 
 	// Use this for initialization
 	void Start () {
@@ -25,7 +34,7 @@ public class BoxDrawer2 : MonoBehaviour {
         if (Input.GetMouseButton(0))
         {
             maxPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Rect rect = new Rect();
+            
             rect.min = minPoint;
             rect.max = maxPoint;
             

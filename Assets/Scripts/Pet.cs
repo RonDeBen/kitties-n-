@@ -10,9 +10,11 @@ using UnityEngine;
 public class Pet : MonoBehaviour
 {
 
+    private RandomMovement rm;
+
     void Awake()
     {
-
+        rm = gameObject.GetComponent<RandomMovement>();
     }
 
     // Use this for initialization
@@ -24,16 +26,5 @@ public class Pet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-    }
-
-    public void OnTriggerEnter2D(Collider2D collision)
-    {
-        GetComponent<RandomMovement>().enabled = false;
-    }
-
-    public void OnTriggerExit2D(Collider2D collision)
-    {
-        GetComponent<RandomMovement>().enabled = true;
     }
 }
