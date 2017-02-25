@@ -24,7 +24,7 @@ public class ShoeBox : MonoBehaviour
             pet.GetComponent<RandomMovement>().enabled = false;
             if (pet.tag.Equals("kitten"))
                 kittens.Add(pet.gameObject);
-            else
+            if (pet.tag.Equals("puppy"))
                 puppies.Add(pet.gameObject);
         }
         PopulationManager.instance.RemoveKittensFromList(kittens);

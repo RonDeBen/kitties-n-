@@ -132,9 +132,6 @@ public class PopulationManager : MonoBehaviour {
 		foreach(GameObject kitten in kittens){
 			kittenPopulation -= 1;
 			GameObject obj = ExtractKitten(kitten);
-			if(obj != null){
-				Destroy(obj);
-			}
 		}
 	}
 
@@ -142,9 +139,6 @@ public class PopulationManager : MonoBehaviour {
 		foreach(GameObject doggie in doggies){
 			doggiePopulation -= 1;
 			GameObject obj = ExtractDoggie(doggie);
-			if(obj != null){
-				Destroy(obj);
-			}
 		}
 	}
 

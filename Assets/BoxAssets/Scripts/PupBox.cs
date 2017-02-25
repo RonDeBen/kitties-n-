@@ -15,6 +15,8 @@ public class PupBox : MonoBehaviour {
     	float animalDensity = PopulationManager.instance.TotalPopulation() / GameBounds.instance.Area();
     	float myVolume = Mathf.Abs(myRect.width) * Mathf.Abs(myRect.height);
     	int numPuppies = (int)(myVolume * animalDensity);
+        if(numPuppies < 1)
+            numPuppies =1;
     	PopulationManager.instance.SpawnDoggiesInRect(numPuppies, myRect);
     	Destroy(gameObject);
     }
