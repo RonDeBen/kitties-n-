@@ -17,7 +17,7 @@ public class PopulationManager : MonoBehaviour {
 	public float a, b, c, d, generationTime;
 	public int hackStartDog, hackStartCat;
 
-	private Stack<GameObject> kittenStack, doggieStack;
+	private List<GameObject> kittenList, doggieList;
 
 	private float catsToSpawn, dogsToSpawn, dogsSpawned, catsSpawned, generationStartTime;
 
@@ -26,8 +26,8 @@ public class PopulationManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		kittenStack = new Stack<GameObject>();
-		doggieStack = new Stack<GameObject>();
+		kittenList = new List<GameObject>();
+		doggieList = new List<GameObject>();
 		SpawnKittens(hackStartCat);
 		SpawnDoggies(hackStartDog);
 		nextSpawn = Time.time + generationTime;
@@ -82,7 +82,7 @@ public class PopulationManager : MonoBehaviour {
 		doggiePopulation += numOfDoggies;
 		for(int k = 0; k < numOfDoggies; k++){
 			Vector3 newPos = new Vector3(Random.Range(0f, GameBounds.instance.width), Random.Range(0f, GameBounds.instance.height), 0f);
-			doggieStack.Push(Instantiate(doggieObject, newPos, Quaternion.identity));
+			doggieList.Add(Instantiate(doggieObject, newPos, Quaternion.identity));
 		}
 	}
 
@@ -90,7 +90,7 @@ public class PopulationManager : MonoBehaviour {
 		doggiePopulation += numOfDoggies;
 		for(int k = 0; k < numOfDoggies; k++){
 			Vector3 newPos = new Vector3(myRect.min.x + Random.Range(0f, myRect.width), myRect.min.y + Random.Range(0f, myRect.height), 0f);
-			doggieStack.Push(Instantiate(doggieObject, newPos, Quaternion.identity));
+			doggieList.Add(Instantiate(doggieObject, newPos, Quaternion.identity));
 		}
 	}
 
@@ -98,7 +98,7 @@ public class PopulationManager : MonoBehaviour {
 		kittenPopulation += numOfKittens;
 		for(int k = 0; k < numOfKittens; k++){
 			Vector3 newPos = new Vector3(Random.Range(0f, GameBounds.instance.width), Random.Range(0f, GameBounds.instance.height), 0f);
-			kittenStack.Push(Instantiate(kittenObject, newPos, Quaternion.identity));
+			kittenList.Add(Instantiate(kittenObject, newPos, Quaternion.identity));
 		}
 	}
 
@@ -108,7 +108,7 @@ public class PopulationManager : MonoBehaviour {
 		}
 		doggiePopulation -= numOfDoggies;
 		for(int k = 0; k < numOfDoggies; k++){
-			GameObject obj = doggieStack.Pop();
+			GameObject obj = ExtractDoggie(doggieList[0]);
 			if(obj != null){
 				Destroy(obj);
 			}
@@ -121,11 +121,25 @@ public class PopulationManager : MonoBehaviour {
 		}
 		kittenPopulation -= numOfKittens;
 		for(int k = 0; k < numOfKittens; k++){
-			GameObject obj = kittenStack.Pop();
+			GameObject obj = ExtractKitten(kittenList[0]);
 			if(obj != null){
 				Destroy(obj);
 			}
 		}
+	}
+
+	public GameObject ExtractKitten(GameObject kitten){
+		int index = kittenList.FindIndex(i => i == kitten);
+		GameObject obj = kittenList[index];
+		kittenList.RemoveAt(index);
+		return obj;
+	}
+
+	public GameObject ExtractDoggie(GameObject doggie){
+		int index = doggieList.FindIndex(i => i == doggie);
+		GameObject obj = doggieList[index];
+		doggieList.RemoveAt(index);
+		return obj;
 	}
 
 	public float TotalPopulation(){
