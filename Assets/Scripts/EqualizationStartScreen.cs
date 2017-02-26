@@ -32,10 +32,11 @@ public class EqualizationStartScreen : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Level thisLevel = levels[GameManager.instance.level];
+		Debug.Log(GameManager.instance.level);
 		playerPrompt.text = "In this level you will need to get " + thisLevel.goalKittens + 
 		" kittens and " + thisLevel.goalDoggies + " puppies. " + "\n" + 
 		"You will start off with " + thisLevel.startingKittens + " kittens and " + thisLevel.startingDoggies + 
-		" puppies. Who are capped at " + thisLevel.maxKittens + " and " + thisLevel.maxKittens + "respectively.";
+		" puppies who are capped at " + thisLevel.maxKittens + " and " + thisLevel.maxKittens + " respectively.";
 	}
 	
 	// Update is called once per frame

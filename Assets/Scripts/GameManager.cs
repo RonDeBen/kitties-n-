@@ -15,5 +15,6 @@ public class GameManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		DontDestroyOnLoad(transform.gameObject);
+		MusicMiddleware.loopSound("catSongEdited",true);
 	}
 }
