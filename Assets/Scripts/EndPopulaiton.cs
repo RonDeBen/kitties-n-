@@ -18,4 +18,8 @@ public class EndPopulaiton : MonoBehaviour {
 	void Update () {
 		
 	}
+
+	public void OnNewGameClicked(){
+		Application.LoadLevel("StartScreen");
+	}
 }

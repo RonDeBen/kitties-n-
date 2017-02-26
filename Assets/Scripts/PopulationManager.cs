@@ -28,10 +28,10 @@ public class PopulationManager : MonoBehaviour {
 	void Start () {
 		kittenList = new List<GameObject>();
 		doggieList = new List<GameObject>();
-		SpawnKittens(hackStartCat);
-		SpawnDoggies(hackStartDog);
-		// SpawnKittens(GameManager.instance.startKittens);
-		// SpawnDoggies(GameManager.instance.startDoggies);
+		// SpawnKittens(hackStartCat);
+		// SpawnDoggies(hackStartDog);
+		SpawnKittens(GameManager.instance.startKittens);
+		SpawnDoggies(GameManager.instance.startDoggies);
 		nextSpawn = Time.timeSinceLevelLoad;
 
 	}
@@ -39,9 +39,15 @@ public class PopulationManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update(){
 		// LerpAnimals();
-		// if(Time.timeSinceLevelLoad > endTime){
-		// 	EndGame();
-		// }
+		if(Time.timeSinceLevelLoad > endTime){
+			EndGame();
+		}
+		if(doggiePopulation < 1){
+			SpawnDoggies(1);
+		}
+		if(kittenPopulation < 1){
+			SpawnKittens(1);
+		}
 	}
 
 	void FixedUpdate(){
@@ -89,12 +95,13 @@ public class PopulationManager : MonoBehaviour {
 		generationStartTime = Time.timeSinceLevelLoad;
 		float dogThing = (a+b*kittenPopulation)*doggiePopulation;
 		float catThing = (c-d*doggiePopulation)*kittenPopulation;
+
 		dogsToSpawn = (int)(dogThing - doggiePopulation);
 		catsToSpawn = (int)(catThing - kittenPopulation);
 		catsToSpawn = (Mathf.Abs(catsToSpawn) >= 1) ? catsToSpawn : 1;
+		dogsToSpawn = (Mathf.Abs(dogsToSpawn) >= 1) ? dogsToSpawn : 1;
 		catsSpawned = 0;
 		dogsSpawned = 0;
-		Debug.Log(catsToSpawn);
 	}
 
 	public void SpawnDoggies(int numOfDoggies){
@@ -140,8 +147,6 @@ public class PopulationManager : MonoBehaviour {
 				if(go != null){
 					Destroy(go);
 					doggiePopulation--;
-				}else{
-					Debug.Log("piss out my ass");
 				}
 			}
 		}
@@ -156,8 +161,6 @@ public class PopulationManager : MonoBehaviour {
 			if(go != null){
 				Destroy(go);
 				kittenPopulation--;
-			}else{
-				Debug.Log("faggernaggot");
 			}
 		}
 	}
