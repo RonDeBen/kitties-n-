@@ -10,8 +10,7 @@ public class EndPopulaiton : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		int endKittens = GameManager.instance.endKittens;
-		thing.text = "You ended with " + endKittens.ToString() + " kittens. " + Mathf.Abs(goalKittens - endKittens).ToString() + " away from your goal of " + goalKittens.ToString();
+		WriteEnding();
 	}
 	
 	// Update is called once per frame
@@ -19,7 +18,23 @@ public class EndPopulaiton : MonoBehaviour {
 		
 	}
 
+	void WriteEnding(){
+		if(GameManager.instance.mode == GameManager.GameMode.Timed){
+			thing.text = "You ended with " + GameManager.instance.endKittens + " kittens. " + Mathf.Abs(goalKittens - GameManager.instance.endKittens) + " away from your goal of " + goalKittens;
+		}else if(GameManager.instance.mode == GameManager.GameMode.Equalize){
+			thing.text = "Congratulations! You regulated the populations in " + GameManager.instance.gameTime.ToString("F1") + " seconds." + "\n" +
+			"In the process you adoped " + GameManager.instance.adoptedKittens + " kittens and " + GameManager.instance.adoptedDoggies + 
+			" puppies, and you released " + GameManager.instance.releasedDoggies + " puppies.";
+
+
+		}
+	}
+
 	public void OnNewGameClicked(){
 		Application.LoadLevel("StartScreen");
+	}
+
+	public void OnBackToStartClicked(){
+		Application.LoadLevel("SelectionScreen");
 	}
 }

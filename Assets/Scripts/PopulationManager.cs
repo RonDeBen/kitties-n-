@@ -22,7 +22,7 @@ public class PopulationManager : MonoBehaviour {
 	private float catsToSpawn, dogsToSpawn, dogsSpawned, catsSpawned, generationStartTime, gameStartTime;
 
 	private float nextSpawn;
-	private int kittenPopulation, doggiePopulation;
+	private int kittenPopulation = 0, doggiePopulation = 0, capturedKittens = 0, capturedDoggies = 0, releasedDoggies = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -30,18 +30,18 @@ public class PopulationManager : MonoBehaviour {
 		doggieList = new List<GameObject>();
 		// SpawnKittens(hackStartCat);
 		// SpawnDoggies(hackStartDog);
+		nextSpawn = Time.timeSinceLevelLoad;
+		if(GameManager.instance.mode == GameManager.GameMode.Equalize){
+			maxDoggies = GameManager.instance.maxDoggies;
+			maxKittens = GameManager.instance.maxKittens;
+			
+		}
 		SpawnKittens(GameManager.instance.startKittens);
 		SpawnDoggies(GameManager.instance.startDoggies);
-		nextSpawn = Time.timeSinceLevelLoad;
-
 	}
 	
 	// Update is called once per frame
 	void Update(){
-		// LerpAnimals();
-		if(Time.timeSinceLevelLoad > endTime){
-			EndGame();
-		}
 		if(doggiePopulation < 1){
 			SpawnDoggies(1);
 		}
@@ -50,18 +50,31 @@ public class PopulationManager : MonoBehaviour {
 		}
 	}
 
+	public void CheckEndGame(){
+		if(GameManager.instance.mode == GameManager.GameMode.Timed){
+			if(Time.timeSinceLevelLoad > endTime){
+				GameManager.instance.endKittens = kittenPopulation;
+				GameManager.instance.endDoggies = doggiePopulation;
+				Application.LoadLevel("TimeScreen");
+			}
+		}else if(GameManager.instance.mode == GameManager.GameMode.Equalize){
+			if(kittenPopulation == GameManager.instance.goalKittens && doggiePopulation == GameManager.instance.goalDoggies){
+				GameManager.instance.gameTime = Time.timeSinceLevelLoad;
+				GameManager.instance.adoptedDoggies = capturedDoggies;
+				GameManager.instance.adoptedKittens = capturedKittens;
+				GameManager.instance.releasedDoggies = releasedDoggies;
+				Application.LoadLevel("TimeScreen");
+			}
+		}
+	}
+
 	void FixedUpdate(){
+		CheckEndGame();
 		if(Time.timeSinceLevelLoad > nextSpawn){
 			nextSpawn = Time.timeSinceLevelLoad + generationTime;
 			GetNextGeneration();
 		}
 		LerpAnimals();
-	}
-
-	public void EndGame(){
-		GameManager.instance.endKittens = kittenPopulation;
-		GameManager.instance.endDoggies = doggiePopulation;
-		Application.LoadLevel("TimeScreen");
 	}
 
 	public void LerpAnimals(){
@@ -170,9 +183,15 @@ public class PopulationManager : MonoBehaviour {
 	}
 
 	public void DecrementDoggieCount(){
+		capturedDoggies++;
 		doggiePopulation--;
 	}
 	public void DecrementKittenCount(){
+		capturedKittens++;
 		kittenPopulation--;
+	}
+
+	public void ReleaseDoggies(int numOfDoggies){
+		releasedDoggies += numOfDoggies;
 	}
 }

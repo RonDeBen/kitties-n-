@@ -32,7 +32,6 @@ public class EqualizationStartScreen : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Level thisLevel = levels[GameManager.instance.level];
-		Debug.Log(GameManager.instance.level);
 		playerPrompt.text = "In this level you will need to get " + thisLevel.goalKittens + 
 		" kittens and " + thisLevel.goalDoggies + " puppies. " + "\n" + 
 		"You will start off with " + thisLevel.startingKittens + " kittens and " + thisLevel.startingDoggies + 
@@ -45,7 +44,15 @@ public class EqualizationStartScreen : MonoBehaviour {
 	}
 
 	public void OnStartButtonClicked(){
-
+		Level thisLevel = levels[GameManager.instance.level];
+		GameManager.instance.mode = GameManager.GameMode.Equalize;
+		GameManager.instance.startDoggies = thisLevel.startingDoggies;
+		GameManager.instance.startKittens = thisLevel.startingKittens;
+		GameManager.instance.goalDoggies = thisLevel.goalDoggies;
+		GameManager.instance.goalKittens = thisLevel.goalKittens;
+		GameManager.instance.maxDoggies = thisLevel.maxDoggies;
+		GameManager.instance.maxKittens = thisLevel.maxKittens;
+		Application.LoadLevel("GameScene2");
 	}
 
 

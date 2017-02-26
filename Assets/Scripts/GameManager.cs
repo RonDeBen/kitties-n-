@@ -6,7 +6,11 @@ public class GameManager : MonoBehaviour {
 
 	public enum GameMode {Timed, Equalize, Capture};
 
-	public int startKittens, startDoggies, endKittens, endDoggies, level = 0;
+	public int startKittens, startDoggies, endKittens, endDoggies, 
+                level = 0, maxKittens, maxDoggies, goalKittens, goalDoggies,
+                adoptedKittens, adoptedDoggies, releasedDoggies;
+
+    public float gameTime;
 
 	public GameMode mode;
 

@@ -18,6 +18,7 @@ public class PupBox : MonoBehaviour {
         if(numPuppies < 1)
             numPuppies =1;
     	PopulationManager.instance.SpawnDoggiesInRect(numPuppies, myRect);
+        PopulationManager.instance.ReleaseDoggies(numPuppies);
     	Destroy(gameObject);
     }
 }
