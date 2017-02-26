@@ -34,7 +34,7 @@ public class PopulationManager : MonoBehaviour {
 		if(GameManager.instance.mode == GameManager.GameMode.Equalize){
 			maxDoggies = GameManager.instance.maxDoggies;
 			maxKittens = GameManager.instance.maxKittens;
-			
+
 		}
 		SpawnKittens(GameManager.instance.startKittens);
 		SpawnDoggies(GameManager.instance.startDoggies);
@@ -58,7 +58,7 @@ public class PopulationManager : MonoBehaviour {
 				Application.LoadLevel("TimeScreen");
 			}
 		}else if(GameManager.instance.mode == GameManager.GameMode.Equalize){
-			if(kittenPopulation == GameManager.instance.goalKittens && doggiePopulation == GameManager.instance.goalDoggies){
+			if(Mathf.Abs(kittenPopulation - GameManager.instance.goalKittens) < (GameManager.instance.level+1) && Mathf.Abs(doggiePopulation - GameManager.instance.goalDoggies) < (GameManager.instance.level+1)){
 				GameManager.instance.gameTime = Time.timeSinceLevelLoad;
 				GameManager.instance.adoptedDoggies = capturedDoggies;
 				GameManager.instance.adoptedKittens = capturedKittens;

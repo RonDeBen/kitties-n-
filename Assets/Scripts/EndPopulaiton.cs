@@ -7,6 +7,7 @@ public class EndPopulaiton : MonoBehaviour {
 
 	public Text thing;
 	public int goalKittens;
+	public Button RestartButton;
 
 	// Use this for initialization
 	void Start () {
@@ -26,15 +27,23 @@ public class EndPopulaiton : MonoBehaviour {
 			"In the process you adoped " + GameManager.instance.adoptedKittens + " kittens and " + GameManager.instance.adoptedDoggies + 
 			" puppies, and you released " + GameManager.instance.releasedDoggies + " puppies.";
 
-
+			int nextLevel = GameManager.instance.level + 1;
+			if(nextLevel > 4){
+				RestartButton.enabled = false;
+				RestartButton.GetComponentInChildren<Text>().text = "You Win!";
+			}else{
+				RestartButton.GetComponentInChildren<Text>().text = "Level " + (nextLevel+1) + "?";
+			}
 		}
 	}
 
 	public void OnNewGameClicked(){
-		Application.LoadLevel("StartScreen");
+		if(GameManager.instance.mode == GameManager.GameMode.Timed){
+			Application.LoadLevel("StartScreen");
+		}else if(GameManager.instance.mode == GameManager.GameMode.Equalize){
+			GameManager.instance.level++;
+			Application.LoadLevel("EqualizationStartScreen");
+		}
 	}
 
-	public void OnBackToStartClicked(){
-		Application.LoadLevel("SelectionScreen");
-	}
 }
