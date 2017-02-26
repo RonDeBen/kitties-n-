@@ -65,6 +65,14 @@ public class BoxDrawer2 : MonoBehaviour {
             pupCub.transform.position = pupRect.center;
             pupCub.transform.localScale = pupRect.size;
             pupCub.myRect = pupRect;
+            if(pupCub.transform.localScale.y < 0)
+            {
+                pupCub.GetComponentInChildren<SpriteRenderer>().flipY = true;
+            }
+            else
+            {
+                pupCub.GetComponentInChildren<SpriteRenderer>().flipY = false;
+            }
         }
         if (Input.GetMouseButtonUp(1))//release right mouse button
         {
