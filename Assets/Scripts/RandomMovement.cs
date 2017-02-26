@@ -17,10 +17,12 @@ public class RandomMovement : MonoBehaviour {
     private float tChange = 0; // force new direction in the first Update
     private float randomX;
     private float randomY;
+    private SpriteRenderer sprender;
 
     void Start()
     {
         screenSpace = new Rect(0f, 0f, GameBounds.instance.width, GameBounds.instance.height);
+        sprender = gameObject.GetComponent<SpriteRenderer>();
     }
  
  void Update()
@@ -31,6 +33,11 @@ public class RandomMovement : MonoBehaviour {
             randomX = Random.Range(-2.0f, 2.0f); // with float parameters, a random float
             randomY = Random.Range(-2.0f, 2.0f); //  between -2.0 and 2.0 is returned
                                                // set a random interval between 0.5 and 1.5
+            if(randomX > 0){//going right
+                sprender.flipX = true;
+            }else{
+                sprender.flipX = false;
+            }
             tChange = Time.time + Random.Range(minTimeToTurn, maxTimeToTurn);
         }
         transform.Translate(new Vector3(randomX, randomY, 0) * moveSpeed * Time.deltaTime);
