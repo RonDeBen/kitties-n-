@@ -66,6 +66,16 @@ public class PopulationManager : MonoBehaviour {
 				Application.LoadLevel("TimeScreen");
 			}
 		}
+
+        else if(GameManager.instance.mode == GameManager.GameMode.Capture)
+        {
+            if (Time.timeSinceLevelLoad > endTime)
+            {
+                GameManager.instance.adoptedDoggies = capturedDoggies;
+                GameManager.instance.adoptedKittens = capturedKittens;
+                Application.LoadLevel("TimeScreen");
+            }
+        }
 	}
 
 	void FixedUpdate(){
