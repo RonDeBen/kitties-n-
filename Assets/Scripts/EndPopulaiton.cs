@@ -34,7 +34,13 @@ public class EndPopulaiton : MonoBehaviour {
 			}else{
 				RestartButton.GetComponentInChildren<Text>().text = "Level " + (nextLevel+1) + "?";
 			}
-		}
+        }
+        else
+        {
+            thing.text = "You adopted "+GameManager.instance.adoptedKittens+" kittens!\n"+
+                "You also adopted "+GameManager.instance.adoptedDoggies+" puppies.\n"+
+                "High score is "+PlayerPrefs.GetInt("CaptureHighScore")+ " kittens";
+        }
 	}
 
 	public void OnNewGameClicked(){
