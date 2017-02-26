@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
-	public int startKittens, startDoggies;
+	public int startKittens, startDoggies, endKittens, endDoggies, level = 0;
 
 	public static GameManager instance;
 
