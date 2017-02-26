@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
+	public enum GameMode {Timed, Equalize, Capture};
+
 	public int startKittens, startDoggies, endKittens, endDoggies, level = 0;
+
+	public GameMode mode;
 
 	public static GameManager instance;
 
