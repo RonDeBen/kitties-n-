@@ -32,20 +32,24 @@ public class PopulationManager : MonoBehaviour {
 		SpawnDoggies(hackStartDog);
 		// SpawnKittens(GameManager.instance.startKittens);
 		// SpawnDoggies(GameManager.instance.startDoggies);
-		nextSpawn = Time.timeSinceLevelLoad + generationTime;
+		nextSpawn = Time.timeSinceLevelLoad;
 
 	}
 	
 	// Update is called once per frame
 	void Update(){
+		// LerpAnimals();
+		// if(Time.timeSinceLevelLoad > endTime){
+		// 	EndGame();
+		// }
+	}
+
+	void FixedUpdate(){
 		if(Time.timeSinceLevelLoad > nextSpawn){
 			nextSpawn = Time.timeSinceLevelLoad + generationTime;
 			GetNextGeneration();
 		}
 		LerpAnimals();
-		// if(Time.timeSinceLevelLoad > endTime){
-		// 	EndGame();
-		// }
 	}
 
 	public void EndGame(){
@@ -90,6 +94,7 @@ public class PopulationManager : MonoBehaviour {
 		catsToSpawn = (Mathf.Abs(catsToSpawn) >= 1) ? catsToSpawn : 1;
 		catsSpawned = 0;
 		dogsSpawned = 0;
+		Debug.Log(catsToSpawn);
 	}
 
 	public void SpawnDoggies(int numOfDoggies){
@@ -130,10 +135,14 @@ public class PopulationManager : MonoBehaviour {
 			numOfDoggies = doggiePopulation;
 		}
 		for(int k = 0; k < numOfDoggies; k++){
-			GameObject go = GameObject.FindWithTag("puppy");
-			if(go != null){
-				Destroy(go);
-				doggiePopulation--;
+			if(doggiePopulation > 0){
+				GameObject go = GameObject.FindWithTag("puppy");
+				if(go != null){
+					Destroy(go);
+					doggiePopulation--;
+				}else{
+					Debug.Log("piss out my ass");
+				}
 			}
 		}
 	}
@@ -147,6 +156,8 @@ public class PopulationManager : MonoBehaviour {
 			if(go != null){
 				Destroy(go);
 				kittenPopulation--;
+			}else{
+				Debug.Log("faggernaggot");
 			}
 		}
 	}
