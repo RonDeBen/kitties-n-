@@ -49,7 +49,10 @@ public class EndPopulaiton : MonoBehaviour {
 		}else if(GameManager.instance.mode == GameManager.GameMode.Equalize){
 			GameManager.instance.level++;
 			Application.LoadLevel("EqualizationStartScreen");
-		}
+		}else if(GameManager.instance.mode == GameManager.GameMode.Capture)
+        {
+            Application.LoadLevel("GameScene2");
+        }
 	}
 
 }

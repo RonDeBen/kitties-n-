@@ -15,6 +15,10 @@ public class SelectionScreen : MonoBehaviour {
 	}
 	public void OnAdoptionClicked(){
 		GameManager.instance.mode = GameManager.GameMode.Capture;
-		Application.LoadLevel("StartScreen");
+        GameManager.instance.startKittens = 30;
+        GameManager.instance.startDoggies = 20;
+        GameManager.instance.maxDoggies = 200;
+        GameManager.instance.maxKittens = 200;
+		Application.LoadLevel("GameScene2");
 	}
 }
