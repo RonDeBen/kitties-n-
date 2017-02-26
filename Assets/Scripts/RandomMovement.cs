@@ -34,9 +34,9 @@ public class RandomMovement : MonoBehaviour {
             randomY = Random.Range(-2.0f, 2.0f); //  between -2.0 and 2.0 is returned
                                                // set a random interval between 0.5 and 1.5
             if(randomX > 0){//going right
-                sprender.flipX = true;
-            }else{
                 sprender.flipX = false;
+            }else{
+                sprender.flipX = true;
             }
             tChange = Time.time + Random.Range(minTimeToTurn, maxTimeToTurn);
         }
