@@ -40,5 +40,12 @@ public class GameManager : MonoBehaviour {
         endKittens = 0;
         endDoggies = 0;
         level = 0;
+        maxKittens = 0;
+        maxDoggies = 0;
+        goalKittens = 0;
+        goalDoggies = 0;
+        adoptedKittens = 0;
+        adoptedDoggies = 0;
+        releasedDoggies = 0;
     }
 }
