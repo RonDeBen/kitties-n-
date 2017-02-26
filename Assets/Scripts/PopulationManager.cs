@@ -14,12 +14,12 @@ public class PopulationManager : MonoBehaviour {
 
 	public GameObject kittenObject, doggieObject;
 	public Text kittenText, doggieText, timeText;
-	public float a, b, c, d, generationTime;
-	public int hackStartDog, hackStartCat;
+	public float a, b, c, d, generationTime, endTime;
+	public int maxDoggies, maxKittens, hackStartDog, hackStartCat;
 
 	private List<GameObject> kittenList, doggieList;
 
-	private float catsToSpawn, dogsToSpawn, dogsSpawned, catsSpawned, generationStartTime;
+	private float catsToSpawn, dogsToSpawn, dogsSpawned, catsSpawned, generationStartTime, gameStartTime;
 
 	private float nextSpawn;
 	private int kittenPopulation, doggiePopulation;
@@ -30,75 +30,98 @@ public class PopulationManager : MonoBehaviour {
 		doggieList = new List<GameObject>();
 		SpawnKittens(hackStartCat);
 		SpawnDoggies(hackStartDog);
-		nextSpawn = Time.time + generationTime;
+		// SpawnKittens(GameManager.instance.startKittens);
+		// SpawnDoggies(GameManager.instance.startDoggies);
+		nextSpawn = Time.timeSinceLevelLoad + generationTime;
+
 	}
 	
 	// Update is called once per frame
 	void Update(){
-		if(Time.time > nextSpawn){
-			nextSpawn = Time.time + generationTime;
+		if(Time.timeSinceLevelLoad > nextSpawn){
+			nextSpawn = Time.timeSinceLevelLoad + generationTime;
 			GetNextGeneration();
 		}
 		LerpAnimals();
+		// if(Time.timeSinceLevelLoad > endTime){
+		// 	EndGame();
+		// }
+	}
+
+	public void EndGame(){
+		GameManager.instance.endKittens = kittenPopulation;
+		GameManager.instance.endDoggies = doggiePopulation;
+		Application.LoadLevel("TimeScreen");
 	}
 
 	public void LerpAnimals(){
-		float percentage = (nextSpawn-Time.time)/generationTime;
+		float percentage = (Time.timeSinceLevelLoad - generationStartTime)/generationTime;
 		if(catsToSpawn > 0){//positive change
 			float kittenSpawnThisCycle = Mathf.Lerp(0f, catsToSpawn, percentage) - catsSpawned;
-			catsSpawned += kittenSpawnThisCycle;
+			catsSpawned += (int)kittenSpawnThisCycle;
 			SpawnKittens((int)kittenSpawnThisCycle);
 		}else{//negative change
 			float kittenRemoveThisCycle = -(Mathf.Lerp(0f, catsToSpawn, percentage) + catsSpawned);
-			catsSpawned += kittenRemoveThisCycle;//should really be catsRemoved
+			catsSpawned += (int)kittenRemoveThisCycle;//should really be catsRemoved
 			RemoveKittens((int)kittenRemoveThisCycle);
 		}
 
 		if(dogsToSpawn > 0){//positive change
 			float doggiesSpawnThisCycle = Mathf.Lerp(0f, dogsToSpawn, percentage) - dogsSpawned;
-			dogsSpawned += doggiesSpawnThisCycle;
+			dogsSpawned += (int)doggiesSpawnThisCycle;
 			SpawnDoggies((int)doggiesSpawnThisCycle);
 		}else{//negative change
 			float doggiesRemoveThisCycle = -(Mathf.Lerp(0f, dogsToSpawn, percentage) + dogsSpawned);
-			dogsSpawned += doggiesRemoveThisCycle;//should really be dogsRemoved
+			dogsSpawned += (int)doggiesRemoveThisCycle;//should really be dogsRemoved
 			RemoveDoggies((int)doggiesRemoveThisCycle);
 		}
 
 		kittenText.text = "Number of Kittens: " + kittenPopulation.ToString();
 		doggieText.text = "Number of Puppies: " + doggiePopulation.ToString();
-		timeText.text = "Time: " + Time.time.ToString("F1");
+		timeText.text = "Time: " + Time.timeSinceLevelLoad.ToString("F1");
 	}
 
 	public void GetNextGeneration(){
+		generationStartTime = Time.timeSinceLevelLoad;
 		float dogThing = (a+b*kittenPopulation)*doggiePopulation;
 		float catThing = (c-d*doggiePopulation)*kittenPopulation;
-		dogsToSpawn = dogThing - doggiePopulation;
-		catsToSpawn = catThing - kittenPopulation;
+		dogsToSpawn = (int)(dogThing - doggiePopulation);
+		catsToSpawn = (int)(catThing - kittenPopulation);
+		catsToSpawn = (Mathf.Abs(catsToSpawn) >= 1) ? catsToSpawn : 1;
 		catsSpawned = 0;
 		dogsSpawned = 0;
 	}
 
 	public void SpawnDoggies(int numOfDoggies){
-		doggiePopulation += numOfDoggies;
+		if(doggiePopulation+numOfDoggies > maxDoggies){
+			numOfDoggies = maxDoggies - doggiePopulation;
+		}
 		for(int k = 0; k < numOfDoggies; k++){
 			Vector3 newPos = new Vector3(Random.Range(0f, Mathf.Abs(GameBounds.instance.width)), Random.Range(0f, Mathf.Abs(GameBounds.instance.height)), 0f);
-			doggieList.Add(Instantiate(doggieObject, newPos, Quaternion.identity));
-		}
+			Instantiate(doggieObject, newPos, Quaternion.identity);
+			doggiePopulation++;
+		}	
 	}
 
 	public void SpawnDoggiesInRect(int numOfDoggies, Rect myRect){
-		doggiePopulation += numOfDoggies;
+		if(doggiePopulation+numOfDoggies > maxDoggies){
+			numOfDoggies = maxDoggies - doggiePopulation;
+		}
 		for(int k = 0; k < numOfDoggies; k++){
 			Vector3 newPos = new Vector3(myRect.min.x + Random.Range(0f, myRect.width), myRect.min.y + Random.Range(0f, myRect.height), 0f);
-			doggieList.Add(Instantiate(doggieObject, newPos, Quaternion.identity));
+			Instantiate(doggieObject, newPos, Quaternion.identity);
+			doggiePopulation++;
 		}
 	}
 
 	public void SpawnKittens(int numOfKittens){
-		kittenPopulation += numOfKittens;
+		if(kittenPopulation+numOfKittens > maxKittens){
+			numOfKittens = maxKittens - kittenPopulation;
+		}
 		for(int k = 0; k < numOfKittens; k++){
 			Vector3 newPos = new Vector3(Random.Range(0f, GameBounds.instance.width), Random.Range(0f, GameBounds.instance.height), 0f);
-			kittenList.Add(Instantiate(kittenObject, newPos, Quaternion.identity));
+			Instantiate(kittenObject, newPos, Quaternion.identity);
+			kittenPopulation++;
 		}
 	}
 
@@ -106,11 +129,11 @@ public class PopulationManager : MonoBehaviour {
 		if(numOfDoggies > doggiePopulation){
 			numOfDoggies = doggiePopulation;
 		}
-		doggiePopulation -= numOfDoggies;
 		for(int k = 0; k < numOfDoggies; k++){
-			GameObject obj = ExtractDoggie(doggieList[0]);
-			if(obj != null){
-				Destroy(obj);
+			GameObject go = GameObject.FindWithTag("puppy");
+			if(go != null){
+				Destroy(go);
+				doggiePopulation--;
 			}
 		}
 	}
@@ -119,44 +142,23 @@ public class PopulationManager : MonoBehaviour {
 		if(numOfKittens > kittenPopulation){
 			numOfKittens = kittenPopulation;
 		}
-		kittenPopulation -= numOfKittens;
 		for(int k = 0; k < numOfKittens; k++){
-			GameObject obj = ExtractKitten(kittenList[0]);
-			if(obj != null){
-				Destroy(obj);
+			GameObject go = GameObject.FindWithTag("kitten");
+			if(go != null){
+				Destroy(go);
+				kittenPopulation--;
 			}
 		}
 	}
 
-	public void RemoveKittensFromList(List<GameObject> kittens){
-		foreach(GameObject kitten in kittens){
-			kittenPopulation -= 1;
-			GameObject obj = ExtractKitten(kitten);
-		}
-	}
-
-	public void RemoveDoggiesFromList(List<GameObject> doggies){
-		foreach(GameObject doggie in doggies){
-			doggiePopulation -= 1;
-			GameObject obj = ExtractDoggie(doggie);
-		}
-	}
-
-	public GameObject ExtractKitten(GameObject kitten){
-		int index = kittenList.FindIndex(i => i == kitten);
-		GameObject obj = kittenList[index];
-		kittenList.RemoveAt(index);
-		return obj;
-	}
-
-	public GameObject ExtractDoggie(GameObject doggie){
-		int index = doggieList.FindIndex(i => i == doggie);
-		GameObject obj = doggieList[index];
-		doggieList.RemoveAt(index);
-		return obj;
-	}
-
 	public float TotalPopulation(){
 		return kittenPopulation + doggiePopulation;
+	}
+
+	public void DecrementDoggieCount(){
+		doggiePopulation--;
+	}
+	public void DecrementKittenCount(){
+		kittenPopulation--;
 	}
 }

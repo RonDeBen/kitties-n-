@@ -74,6 +74,6 @@ public class StartScreen : MonoBehaviour {
 	public void OnStartButtonClicked(){
 		GameManager.instance.startDoggies = doggieNum;
 		GameManager.instance.startKittens = kittenNum;
-		Application.LoadLevel("GameScene");
+		Application.LoadLevel("GameScene2");
 	}
 }

@@ -26,5 +26,13 @@ public class Pet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if( transform.position.y < 0f){
+            if(tag.Equals("capturedPuppy")){
+                PopulationManager.instance.DecrementDoggieCount();
+            }else{
+                 PopulationManager.instance.DecrementKittenCount();
+            }
+            Destroy(gameObject);
+        }
     }
 }

@@ -20,10 +20,7 @@ public class RandomMovement : MonoBehaviour {
 
     void Start()
     {
-        if(screenSpace.size == Rect.zero.size)
-        {
-            screenSpace = Camera.main.pixelRect;
-        }
+        screenSpace = new Rect(0f, 0f, GameBounds.instance.width, GameBounds.instance.height);
     }
  
  void Update()
