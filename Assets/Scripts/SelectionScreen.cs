@@ -15,6 +15,6 @@ public class SelectionScreen : MonoBehaviour {
 	}
 	public void OnAdoptionClicked(){
 		GameManager.instance.mode = GameManager.GameMode.Capture;
-		Application.LoadLevel("StartScene");
+		Application.LoadLevel("StartScreen");
 	}
 }

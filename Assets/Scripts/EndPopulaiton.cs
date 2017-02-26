@@ -35,7 +35,7 @@ public class EndPopulaiton : MonoBehaviour {
 				RestartButton.GetComponentInChildren<Text>().text = "Level " + (nextLevel+1) + "?";
 			}
         }
-        else
+        else if(GameManager.instance.mode == GameManager.GameMode.Capture)
         {
             thing.text = "You adopted "+GameManager.instance.adoptedKittens+" kittens!\n"+
                 "You also adopted "+GameManager.instance.adoptedDoggies+" puppies.\n"+

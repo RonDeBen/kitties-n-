@@ -73,6 +73,10 @@ public class PopulationManager : MonoBehaviour {
             {
                 GameManager.instance.adoptedDoggies = capturedDoggies;
                 GameManager.instance.adoptedKittens = capturedKittens;
+                if (!PlayerPrefs.HasKey("CaptureHighScore") || PlayerPrefs.GetInt("CaptureHighScore") < capturedKittens)
+                {
+                    PlayerPrefs.SetInt("CaptureHighScore", capturedKittens);
+                }
                 Application.LoadLevel("TimeScreen");
             }
         }
