@@ -13,12 +13,28 @@ public class GameManager : MonoBehaviour {
 	public static GameManager instance;
 
 	void Awake(){
-		instance = this;
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
 	}
 
 	// Use this for initialization
 	void Start () {
-		DontDestroyOnLoad(transform.gameObject);
+        DontDestroyOnLoad(transform.gameObject);
 		MusicMiddleware.loopSound("catSongEdited",true);
 	}
+
+    public void ResetValues()
+    {
+        startKittens = 0;
+        startDoggies = 0;
+        endKittens = 0;
+        endDoggies = 0;
+        level = 0;
+    }
 }

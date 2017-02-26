@@ -16,6 +16,7 @@ public class StartScreen : MonoBehaviour {
 	void Start () {
 		kittenIF.onValueChange.AddListener (delegate {KittenValueChangeCheck ();});
 		doggieIF.onValueChange.AddListener (delegate {DoggieValueChangeCheck ();});
+        GameManager.instance.ResetValues();
 	}
 	
 	// Update is called once per frame
